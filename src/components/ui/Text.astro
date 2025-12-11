@@ -1,0 +1,27 @@
+---
+interface Props {
+  variant?: 'body' | 'lead' | 'small' | 'muted' | 'accent';
+  as?: 'p' | 'span' | 'div';
+  class?: string;
+}
+
+const {
+  variant = 'body',
+  as: Tag = 'p',
+  class: className = '',
+} = Astro.props;
+
+const variants = {
+  body: 'text-body text-text-secondary leading-relaxed',
+  lead: 'text-h4 text-text-secondary leading-relaxed font-light',
+  small: 'text-small text-text-muted',
+  muted: 'text-body text-text-muted',
+  accent: 'text-body text-accent font-medium',
+};
+
+const classes = `${variants[variant]} ${className}`;
+---
+
+<Tag class={classes}>
+  <slot />
+</Tag>

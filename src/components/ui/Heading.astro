@@ -1,0 +1,46 @@
+---
+interface Props {
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  size?: 'display' | 'h1' | 'h2' | 'h3' | 'h4';
+  class?: string;
+  gradient?: boolean;
+}
+
+const {
+  level = 2,
+  size,
+  class: className = '',
+  gradient = false,
+} = Astro.props;
+
+// Map level to size if size not provided
+const sizeMap: Record<number, string> = {
+  1: 'h1',
+  2: 'h2',
+  3: 'h3',
+  4: 'h4',
+  5: 'h4',
+  6: 'h4',
+};
+
+const actualSize = size || sizeMap[level];
+
+const sizeStyles: Record<string, string> = {
+  display: 'text-display leading-[1.1] tracking-tight',
+  h1: 'text-h1 leading-tight tracking-tight',
+  h2: 'text-h2 leading-tight',
+  h3: 'text-h3 leading-snug',
+  h4: 'text-h4 leading-snug',
+};
+
+const baseStyles = 'font-heading font-bold text-text';
+const gradientStyles = gradient ? 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent' : '';
+
+const classes = `${baseStyles} ${sizeStyles[actualSize]} ${gradientStyles} ${className}`;
+
+const Tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+---
+
+<Tag class={classes}>
+  <slot />
+</Tag>

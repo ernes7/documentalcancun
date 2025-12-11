@@ -1,0 +1,90 @@
+---
+import { introduction } from '../../data/content';
+import Section from '../layout/Section.astro';
+import Heading from '../ui/Heading.astro';
+import Text from '../ui/Text.astro';
+import FadeIn from '../animation/FadeIn.astro';
+---
+
+<Section id="introduction" variant="alt" padding="xl">
+  <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <!-- Text content -->
+    <div class="space-y-8">
+      <FadeIn>
+        <div class="intro-highlight relative">
+          <span class="absolute -left-4 top-0 text-6xl text-primary/20 font-serif">"</span>
+          <Heading level={2} size="h3" class="text-primary">
+            {introduction.highlight}
+          </Heading>
+        </div>
+      </FadeIn>
+
+      <FadeIn delay={0.2}>
+        <Text variant="body" class="text-lg leading-relaxed">
+          {introduction.text}
+        </Text>
+      </FadeIn>
+
+      <FadeIn delay={0.4}>
+        <div class="border-l-2 border-secondary pl-6">
+          <Text variant="lead" class="text-text">
+            {introduction.callout}
+          </Text>
+        </div>
+      </FadeIn>
+    </div>
+
+    <!-- Visual placeholder -->
+    <FadeIn direction="left" delay={0.3}>
+      <div class="intro-visual relative">
+        <!-- Main image placeholder -->
+        <div class="aspect-[3/4] rounded-2xl bg-surface overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="text-center text-text-muted">
+              <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span class="text-sm">Foto pendiente</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decorative element -->
+        <div class="absolute -bottom-4 -right-4 w-32 h-32 rounded-xl bg-primary/20 -z-10 intro-decor"></div>
+        <div class="absolute -top-4 -left-4 w-24 h-24 rounded-full bg-secondary/10 -z-10 intro-decor-2"></div>
+      </div>
+    </FadeIn>
+  </div>
+</Section>
+
+<script>
+  import { gsap } from '../../scripts/gsap';
+
+  function initIntroduction() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    // Subtle floating for decorative elements
+    gsap.to('.intro-decor', {
+      y: 10,
+      x: 5,
+      duration: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    gsap.to('.intro-decor-2', {
+      y: -8,
+      x: -5,
+      duration: 5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+  }
+
+  initIntroduction();
+  document.addEventListener('astro:page-load', initIntroduction);
+</script>

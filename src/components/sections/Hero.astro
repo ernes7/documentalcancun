@@ -1,0 +1,162 @@
+---
+import { hero } from '../../data/content';
+---
+
+<section id="hero" class="hero-section vignette relative min-h-screen flex items-center justify-center overflow-hidden">
+  <!-- Background video with parallax -->
+  <div class="hero-bg absolute inset-0 z-0">
+    <!-- Video background -->
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      class="absolute inset-0 w-full h-full object-cover"
+      poster="/images/hero/hero-poster.jpg"
+    >
+      <source src="/images/hero/hero-video.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Dark overlay for text readability -->
+    <div class="absolute inset-0 bg-background/60"></div>
+
+    <!-- Gradient overlay for extra depth -->
+    <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/30"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="hero-content relative z-10 container mx-auto px-4 md:px-6 lg:px-8 text-center">
+    <!-- Title -->
+    <div class="hero-title overflow-hidden mb-8">
+      <h1 class="hero-title-text font-heading font-black text-6xl md:text-8xl lg:text-9xl leading-[1] tracking-tight uppercase bg-gradient-to-r from-yellow-400 via-red-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+        {hero.title}
+      </h1>
+    </div>
+
+    <!-- Tagline -->
+    <div class="hero-tagline mb-10">
+      <p class="max-w-3xl mx-auto italic text-text-secondary text-xl md:text-2xl lg:text-3xl leading-relaxed font-light">
+        "{hero.tagline}"
+      </p>
+    </div>
+
+    <!-- Subtitle -->
+    <div class="hero-subtitle">
+      <p class="text-text-muted text-lg md:text-xl font-light tracking-wide">
+        {hero.subtitle}
+      </p>
+    </div>
+  </div>
+
+  <!-- Scroll indicator (outside hero-content for correct positioning) -->
+  <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+    <div class="flex flex-col items-center gap-2 text-text-muted">
+      <span class="text-xs uppercase tracking-widest">Scroll</span>
+      <div class="w-px h-12 bg-gradient-to-b from-text-muted to-transparent scroll-line"></div>
+    </div>
+  </div>
+
+  <!-- Floating elements for visual interest -->
+  <div class="hero-float-1 absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-3xl"></div>
+  <div class="hero-float-2 absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-secondary/5 blur-3xl"></div>
+</section>
+
+<script>
+  import { gsap, ScrollTrigger } from '../../scripts/gsap';
+
+  function initHero() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      gsap.set('.hero-title-text, .hero-tagline, .hero-subtitle, .hero-scroll', {
+        opacity: 1,
+        y: 0,
+      });
+      return;
+    }
+
+    // Initial entrance animation timeline
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    tl.fromTo(
+      '.hero-title-text',
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 1.8 }
+    )
+      .fromTo(
+        '.hero-tagline',
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 1.2 },
+        '-=0.8'
+      )
+      .fromTo(
+        '.hero-subtitle',
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 1.0 },
+        '-=0.6'
+      )
+      .fromTo(
+        '.hero-scroll',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8 },
+        '-=0.3'
+      );
+
+    // Continuous floating animations (slower, more subtle for documentary feel)
+    gsap.to('.hero-float-1', {
+      y: 15,
+      x: 8,
+      duration: 12,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    gsap.to('.hero-float-2', {
+      y: -20,
+      x: -12,
+      duration: 15,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    // Scroll line animation (slower)
+    gsap.to('.scroll-line', {
+      scaleY: 0.5,
+      transformOrigin: 'top',
+      duration: 2.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    // Parallax on scroll (slower for more weight)
+    gsap.to('.hero-bg', {
+      y: () => window.innerHeight * 0.15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+
+    // Fade out content on scroll
+    gsap.to('.hero-content', {
+      opacity: 0,
+      y: -50,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'center center',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+  }
+
+  initHero();
+  document.addEventListener('astro:page-load', initHero);
+</script>

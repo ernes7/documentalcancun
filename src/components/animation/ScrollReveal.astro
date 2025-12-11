@@ -1,0 +1,85 @@
+---
+interface Props {
+  animation?: 'fade' | 'scale' | 'clip' | 'blur';
+  duration?: number;
+  delay?: number;
+  stagger?: number;
+  class?: string;
+}
+
+const {
+  animation = 'fade',
+  duration = 0.8,
+  delay = 0,
+  stagger = 0,
+  class: className = '',
+} = Astro.props;
+
+const initialStyles: Record<string, string> = {
+  fade: 'opacity: 0; transform: translateY(30px);',
+  scale: 'opacity: 0; transform: scale(0.9);',
+  clip: 'clip-path: inset(0 100% 0 0);',
+  blur: 'opacity: 0; filter: blur(10px);',
+};
+---
+
+<div
+  class={`scroll-reveal-element ${className}`}
+  data-reveal-animation={animation}
+  data-reveal-duration={duration}
+  data-reveal-delay={delay}
+  data-reveal-stagger={stagger}
+  style={initialStyles[animation]}
+>
+  <slot />
+</div>
+
+<script>
+  import { gsap, ScrollTrigger } from '../../scripts/gsap';
+
+  function initScrollReveal() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const elements = document.querySelectorAll('.scroll-reveal-element:not([data-initialized])');
+
+    elements.forEach((el) => {
+      el.setAttribute('data-initialized', 'true');
+
+      if (prefersReducedMotion) {
+        gsap.set(el, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          clipPath: 'inset(0 0% 0 0)',
+          filter: 'blur(0px)'
+        });
+        return;
+      }
+
+      const animation = el.getAttribute('data-reveal-animation') || 'fade';
+      const duration = parseFloat(el.getAttribute('data-reveal-duration') || '0.8');
+      const delay = parseFloat(el.getAttribute('data-reveal-delay') || '0');
+
+      const animations: Record<string, gsap.TweenVars> = {
+        fade: { opacity: 1, y: 0 },
+        scale: { opacity: 1, scale: 1 },
+        clip: { clipPath: 'inset(0 0% 0 0)' },
+        blur: { opacity: 1, filter: 'blur(0px)' },
+      };
+
+      gsap.to(el, {
+        ...animations[animation],
+        duration,
+        delay,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+  }
+
+  initScrollReveal();
+  document.addEventListener('astro:page-load', initScrollReveal);
+</script>

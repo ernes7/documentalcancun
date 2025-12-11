@@ -1,0 +1,54 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  aspectRatio?: '16/9' | '4/3' | '1/1' | '3/4' | 'auto';
+  objectFit?: 'cover' | 'contain' | 'fill';
+  placeholder?: boolean;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  aspectRatio = 'auto',
+  objectFit = 'cover',
+  placeholder = true,
+} = Astro.props;
+
+const aspectRatioStyles: Record<string, string> = {
+  '16/9': 'aspect-video',
+  '4/3': 'aspect-[4/3]',
+  '1/1': 'aspect-square',
+  '3/4': 'aspect-[3/4]',
+  'auto': '',
+};
+
+const objectFitStyles: Record<string, string> = {
+  cover: 'object-cover',
+  contain: 'object-contain',
+  fill: 'object-fill',
+};
+
+const placeholderBg = placeholder ? 'bg-surface' : '';
+
+const classes = `${aspectRatioStyles[aspectRatio]} ${objectFitStyles[objectFit]} ${placeholderBg} ${className}`;
+---
+
+<img
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  class={classes}
+  onerror={placeholder ? `this.onerror=null;this.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect fill="%23242430" width="400" height="300"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23666" font-family="system-ui" font-size="16">Imagen</text></svg>'` : undefined}
+/>

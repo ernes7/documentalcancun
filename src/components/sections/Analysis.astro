@@ -1,0 +1,44 @@
+---
+import { analysis } from '../../data/content';
+import Section from '../layout/Section.astro';
+import Heading from '../ui/Heading.astro';
+import Text from '../ui/Text.astro';
+import Card from '../ui/Card.astro';
+import FadeIn from '../animation/FadeIn.astro';
+---
+
+<Section id="analysis" variant="alt" padding="xl">
+  <div class="max-w-6xl mx-auto">
+    <FadeIn>
+      <Heading level={2} size="h2" class="text-center mb-16">
+        {analysis.title}
+      </Heading>
+    </FadeIn>
+
+    <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+      {analysis.items.map((item, index) => (
+        <FadeIn delay={0.1 * (index + 1)} direction="up">
+          <Card variant="glass" class="analysis-card p-8 h-full group">
+            <!-- Icon/Number -->
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg group-hover:bg-primary group-hover:text-text transition-colors duration-300">
+                {String(index + 1).padStart(2, '0')}
+              </div>
+              <Heading level={3} size="h3" class="group-hover:text-primary transition-colors duration-300">
+                {item.title}
+              </Heading>
+            </div>
+
+            <!-- Description -->
+            <Text variant="body" class="leading-relaxed">
+              {item.description}
+            </Text>
+
+            <!-- Decorative line -->
+            <div class="mt-6 h-px bg-gradient-to-r from-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          </Card>
+        </FadeIn>
+      ))}
+    </div>
+  </div>
+</Section>

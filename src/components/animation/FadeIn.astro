@@ -1,0 +1,87 @@
+---
+interface Props {
+  direction?: 'up' | 'down' | 'left' | 'right' | 'none';
+  duration?: number;
+  delay?: number;
+  distance?: number;
+  class?: string;
+  once?: boolean;
+}
+
+const {
+  direction = 'up',
+  duration = 1.2,
+  delay = 0,
+  distance = 30,
+  class: className = '',
+  once = true,
+} = Astro.props;
+
+const directionMap = {
+  up: { y: distance, x: 0 },
+  down: { y: -distance, x: 0 },
+  left: { y: 0, x: distance },
+  right: { y: 0, x: -distance },
+  none: { y: 0, x: 0 },
+};
+
+const { x, y } = directionMap[direction];
+---
+
+<div
+  class={`fade-in-element ${className}`}
+  data-fade-direction={direction}
+  data-fade-duration={duration}
+  data-fade-delay={delay}
+  data-fade-x={x}
+  data-fade-y={y}
+  data-fade-once={once}
+  style="opacity: 0;"
+>
+  <slot />
+</div>
+
+<script>
+  import { gsap, ScrollTrigger } from '../../scripts/gsap';
+
+  function initFadeIn() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const elements = document.querySelectorAll('.fade-in-element:not([data-initialized])');
+
+    elements.forEach((el) => {
+      el.setAttribute('data-initialized', 'true');
+
+      if (prefersReducedMotion) {
+        gsap.set(el, { opacity: 1, x: 0, y: 0 });
+        return;
+      }
+
+      const duration = parseFloat(el.getAttribute('data-fade-duration') || '0.8');
+      const delay = parseFloat(el.getAttribute('data-fade-delay') || '0');
+      const x = parseFloat(el.getAttribute('data-fade-x') || '0');
+      const y = parseFloat(el.getAttribute('data-fade-y') || '0');
+      const once = el.getAttribute('data-fade-once') === 'true';
+
+      gsap.fromTo(
+        el,
+        { opacity: 0, x, y },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration,
+          delay,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: once ? 'play none none none' : 'play none none reverse',
+          },
+        }
+      );
+    });
+  }
+
+  initFadeIn();
+  document.addEventListener('astro:page-load', initFadeIn);
+</script>

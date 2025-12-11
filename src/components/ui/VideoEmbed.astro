@@ -1,0 +1,93 @@
+---
+interface Props {
+  videoId: string;
+  title?: string;
+  thumbnailUrl?: string;
+  class?: string;
+}
+
+const {
+  videoId,
+  title = 'Video',
+  thumbnailUrl,
+  class: className = '',
+} = Astro.props;
+
+// Use YouTube's high-quality thumbnail if not provided
+const thumbnail = thumbnailUrl || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+const fallbackThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+---
+
+<div
+  class={`video-embed relative aspect-video bg-surface rounded-xl overflow-hidden cursor-pointer group ${className}`}
+  data-video-id={videoId}
+  role="button"
+  tabindex="0"
+  aria-label={`Reproducir: ${title}`}
+>
+  <!-- Thumbnail with fallback -->
+  <img
+    src={thumbnail}
+    alt={title}
+    loading="lazy"
+    class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+    onerror={`this.onerror=null;this.src='${fallbackThumbnail}'`}
+  />
+
+  <!-- Overlay gradient -->
+  <div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+
+  <!-- Play button -->
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary/90 flex items-center justify-center shadow-glow transition-all duration-300 group-hover:scale-110 group-hover:bg-primary">
+      <svg
+        class="w-8 h-8 md:w-10 md:h-10 text-text ml-1"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initVideoEmbeds() {
+    const embeds = document.querySelectorAll('.video-embed');
+
+    embeds.forEach((embed) => {
+      const handleClick = () => {
+        const videoId = embed.getAttribute('data-video-id');
+        if (!videoId) return;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        iframe.title = 'YouTube video player';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.className = 'absolute inset-0 w-full h-full';
+
+        embed.innerHTML = '';
+        embed.appendChild(iframe);
+        embed.classList.remove('cursor-pointer');
+        embed.removeAttribute('role');
+        embed.removeAttribute('tabindex');
+      };
+
+      embed.addEventListener('click', handleClick);
+      embed.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      });
+    });
+  }
+
+  // Initialize on page load
+  initVideoEmbeds();
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initVideoEmbeds);
+</script>

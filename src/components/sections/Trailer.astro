@@ -1,0 +1,56 @@
+---
+import { trailer } from '../../data/content';
+import Section from '../layout/Section.astro';
+import Heading from '../ui/Heading.astro';
+import VideoEmbed from '../ui/VideoEmbed.astro';
+import FadeIn from '../animation/FadeIn.astro';
+import ScrollReveal from '../animation/ScrollReveal.astro';
+---
+
+<Section id="trailer" variant="default" padding="xl">
+  <div class="max-w-5xl mx-auto">
+    <FadeIn>
+      <Heading level={2} size="h2" class="text-center mb-12">
+        {trailer.title}
+      </Heading>
+    </FadeIn>
+
+    <ScrollReveal animation="scale">
+      <div class="trailer-container relative">
+        <!-- Glow effect behind video -->
+        <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl blur-xl opacity-50 trailer-glow"></div>
+
+        <!-- Video embed -->
+        <div class="relative">
+          <VideoEmbed
+            videoId={trailer.videoId}
+            title={trailer.thumbnailAlt}
+            class="shadow-2xl"
+          />
+        </div>
+      </div>
+    </ScrollReveal>
+  </div>
+</Section>
+
+<script>
+  import { gsap } from '../../scripts/gsap';
+
+  function initTrailer() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    // Subtle glow animation
+    gsap.to('.trailer-glow', {
+      opacity: 0.7,
+      scale: 1.02,
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+  }
+
+  initTrailer();
+  document.addEventListener('astro:page-load', initTrailer);
+</script>

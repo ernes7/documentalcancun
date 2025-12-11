@@ -1,0 +1,101 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'Los Olvidos del Paraíso | Documental',
+  description = 'Un documental que revela la otra cara de Cancún. Una exploración crítica del modelo de desarrollo en el Caribe Mexicano y su deuda con la dignidad humana.',
+  image = '/og-image.jpg',
+  canonical = Astro.url.href,
+} = Astro.props;
+
+const siteName = 'Los Olvidos del Paraíso';
+const twitterHandle = '@losolvidos'; // Update when available
+const siteUrl = Astro.site || new URL(canonical).origin;
+const imageUrl = new URL(image, siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content="documental, cancún, desigualdad, derechos humanos, méxico, caribe mexicano, justicia social" />
+    <meta name="author" content="Ernesto Arenas" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1a1a24" />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="es_MX" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:site" content={twitterHandle} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Movie",
+      "name": "Los Olvidos del Paraíso",
+      "description": description,
+      "duration": "PT21M28S",
+      "genre": ["Documentary", "Human Rights"],
+      "countryOfOrigin": {
+        "@type": "Country",
+        "name": "México"
+      },
+      "director": {
+        "@type": "Person",
+        "name": "Ernesto Arenas"
+      },
+      "producer": {
+        "@type": "Person",
+        "name": "Elizabeth Morales"
+      },
+      "inLanguage": "es"
+    })} />
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Font (Maven Pro) -->
+    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen bg-background text-text antialiased film-grain">
+    <!-- Skip to main content link for accessibility -->
+    <a
+      href="#hero"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-text focus:rounded-lg focus:outline-none"
+    >
+      Saltar al contenido principal
+    </a>
+    <slot />
+  </body>
+</html>

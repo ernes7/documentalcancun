@@ -1,0 +1,29 @@
+---
+interface Props {
+  variant?: 'default' | 'glass' | 'elevated';
+  hover?: boolean;
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  hover = true,
+  class: className = '',
+} = Astro.props;
+
+const baseStyles = 'rounded-xl overflow-hidden transition-all duration-300';
+
+const variants = {
+  default: 'bg-surface border border-glass-border',
+  glass: 'glass',
+  elevated: 'bg-surface-elevated shadow-lg',
+};
+
+const hoverStyles = hover ? 'hover:scale-[1.02] hover:shadow-xl hover:border-primary/30' : '';
+
+const classes = `${baseStyles} ${variants[variant]} ${hoverStyles} ${className}`;
+---
+
+<div class={classes}>
+  <slot />
+</div>

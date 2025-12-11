@@ -1,0 +1,97 @@
+---
+import { navigation } from '../../data/content';
+---
+
+<nav
+  class="navigation-dock fixed bottom-6 left-1/2 -translate-x-1/2 z-navigation opacity-0 translate-y-4"
+  aria-label="Navegación principal"
+>
+  <div class="glass-strong rounded-full px-3 py-3 shadow-xl">
+    <ul class="flex items-center gap-2">
+      {navigation.items.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="nav-link block px-5 py-2.5 text-body font-medium text-text-secondary rounded-full transition-all duration-300 hover:text-text hover:bg-surface-elevated/50"
+            data-nav-id={item.id}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  import { gsap, ScrollTrigger } from '../../scripts/gsap';
+
+  function initNavigation() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const nav = document.querySelector('.navigation-dock') as HTMLElement;
+    if (!nav) return;
+
+    // Show navigation after scrolling past hero
+    if (!prefersReducedMotion) {
+      gsap.to(nav, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top -100',
+          toggleActions: 'play none none reverse',
+        },
+      });
+    } else {
+      nav.style.opacity = '1';
+      nav.style.transform = 'translateX(-50%) translateY(0)';
+    }
+
+    // Active state tracking
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = nav.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach((link) => {
+              const linkId = link.getAttribute('data-nav-id');
+              if (linkId === id) {
+                link.classList.add('text-text', 'bg-surface-elevated/50');
+                link.classList.remove('text-text-secondary');
+              } else {
+                link.classList.remove('text-text', 'bg-surface-elevated/50');
+                link.classList.add('text-text-secondary');
+              }
+            });
+          }
+        });
+      },
+      {
+        rootMargin: '-50% 0px -50% 0px',
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Smooth scroll for nav links
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  initNavigation();
+  document.addEventListener('astro:page-load', initNavigation);
+</script>

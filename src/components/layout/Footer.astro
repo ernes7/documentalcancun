@@ -1,0 +1,46 @@
+---
+import { meta, footer } from '../../data/content';
+import Text from '../ui/Text.astro';
+---
+
+<footer class="bg-surface border-t border-glass-border py-12 md:py-16">
+  <div class="container mx-auto px-4 md:px-6 lg:px-8">
+    <div class="flex flex-col items-center text-center gap-6">
+      <!-- Documentary metadata -->
+      <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div class="flex items-center gap-2">
+          <span class="text-text-muted text-xs uppercase tracking-wider">Duración</span>
+          <span class="text-text-secondary text-small font-medium">{meta.duration}</span>
+        </div>
+        <div class="h-4 w-px bg-glass-border hidden md:block"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-text-muted text-xs uppercase tracking-wider">País</span>
+          <span class="text-text-secondary text-small font-medium">{meta.country}</span>
+        </div>
+        <div class="h-4 w-px bg-glass-border hidden md:block"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-text-muted text-xs uppercase tracking-wider">Categoría</span>
+          <span class="text-text-secondary text-small font-medium">{meta.category}</span>
+        </div>
+        <div class="h-4 w-px bg-glass-border hidden md:block"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-text-muted text-xs uppercase tracking-wider">Género</span>
+          <span class="text-text-secondary text-small font-medium">{meta.genre}</span>
+        </div>
+        <div class="h-4 w-px bg-glass-border hidden md:block"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-text-muted text-xs uppercase tracking-wider">Tema</span>
+          <span class="text-text-secondary text-small font-medium">{meta.theme}</span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="w-16 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+
+      <!-- Copyright -->
+      <Text variant="muted" class="text-small">
+        {footer.copyright}
+      </Text>
+    </div>
+  </div>
+</footer>
