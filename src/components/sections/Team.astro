@@ -16,7 +16,7 @@ const teamImages: Record<string, ImageMetadata> = {
 };
 ---
 
-<Section id="team" variant="alt" padding="xl" bgColor="verde-oscuro">
+<Section id="team" variant="default" padding="xl">
   <div class="max-w-6xl mx-auto">
     <FadeIn>
       <Heading level={2} size="h2" class="text-center mb-20" style="color: #feca77;">
@@ -48,10 +48,7 @@ const teamImages: Record<string, ImageMetadata> = {
               <div class="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
 
               <!-- Brand color overlay on hover -->
-              <div class="absolute inset-0 transition-all duration-500" style="background: linear-gradient(to bottom right, transparent, transparent); opacity: 0;"></div>
-
-              <!-- Glow on hover -->
-              <div class="absolute inset-0 rounded-2xl transition-all duration-500 group-hover:ring-2" style="--tw-ring-color: rgba(254, 202, 119, 0.6);"></div>
+              <div class="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-500" style="background: linear-gradient(135deg, #33845a 0%, #325a8e 33%, #b12d28 66%, #d1861f 100%);"></div>
             </div>
 
             <!-- Name & Role -->
