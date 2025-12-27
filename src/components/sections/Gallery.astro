@@ -38,14 +38,16 @@ const galleryImages = [
     </FadeIn>
 
     <!-- Masonry Gallery -->
-    <div class="gallery-masonry columns-1 md:columns-2 gap-4">
+    <div class="gallery-masonry columns-2 md:columns-3 gap-4">
       {galleryImages.map((image, index) => (
         <FadeIn delay={0.05 * (index + 1)} direction="up">
           <button
             type="button"
             class="gallery-item group relative overflow-hidden rounded-xl bg-surface cursor-pointer w-full mb-4 break-inside-avoid"
             data-image-index={index}
-            aria-label={image.alt}
+            data-image-src={image.src.src}
+            data-image-alt={image.alt}
+            aria-label={`Ver imagen: ${image.alt}`}
           >
             <!-- Optimized gallery image -->
             <Image
@@ -77,15 +79,114 @@ const galleryImages = [
   </div>
 </Section>
 
+<!-- Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/95 backdrop-blur-sm">
+  <!-- Close button -->
+  <button
+    id="lightbox-close"
+    class="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+    aria-label="Cerrar"
+  >
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+  <!-- Navigation arrows -->
+  <button
+    id="lightbox-prev"
+    class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+    aria-label="Anterior"
+  >
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+
+  <button
+    id="lightbox-next"
+    class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+    aria-label="Siguiente"
+  >
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <!-- Image container -->
+  <div class="max-w-[90vw] max-h-[90vh] flex items-center justify-center">
+    <img
+      id="lightbox-image"
+      src=""
+      alt=""
+      class="max-w-full max-h-[90vh] object-contain rounded-lg"
+    />
+  </div>
+</div>
+
 <script>
   import { gsap } from '../../scripts/gsap';
 
   function initGallery() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = document.querySelectorAll('.gallery-item') as NodeListOf<HTMLElement>;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
 
-    // Add hover scale effect
-    const items = document.querySelectorAll('.gallery-item');
+    let currentIndex = 0;
+    const imageData: { src: string; alt: string }[] = [];
+
+    // Collect image data
     items.forEach((item) => {
+      imageData.push({
+        src: item.dataset.imageSrc || '',
+        alt: item.dataset.imageAlt || '',
+      });
+    });
+
+    // Open lightbox
+    function openLightbox(index: number) {
+      currentIndex = index;
+      updateLightboxImage();
+      lightbox?.classList.remove('hidden');
+      lightbox?.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close lightbox
+    function closeLightbox() {
+      lightbox?.classList.add('hidden');
+      lightbox?.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    // Update lightbox image
+    function updateLightboxImage() {
+      if (lightboxImage && imageData[currentIndex]) {
+        lightboxImage.src = imageData[currentIndex].src;
+        lightboxImage.alt = imageData[currentIndex].alt;
+      }
+    }
+
+    // Navigate to previous image
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + imageData.length) % imageData.length;
+      updateLightboxImage();
+    }
+
+    // Navigate to next image
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % imageData.length;
+      updateLightboxImage();
+    }
+
+    // Event listeners for gallery items
+    items.forEach((item, index) => {
+      item.addEventListener('click', () => openLightbox(index));
+
       if (prefersReducedMotion) return;
 
       item.addEventListener('mouseenter', () => {
@@ -103,6 +204,24 @@ const galleryImages = [
           ease: 'power2.out',
         });
       });
+    });
+
+    // Lightbox controls
+    lightboxClose?.addEventListener('click', closeLightbox);
+    lightboxPrev?.addEventListener('click', prevImage);
+    lightboxNext?.addEventListener('click', nextImage);
+
+    // Close on backdrop click
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (lightbox?.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'ArrowRight') nextImage();
     });
   }
 
