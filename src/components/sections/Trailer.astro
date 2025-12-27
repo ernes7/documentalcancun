@@ -26,42 +26,13 @@ const optimizedThumbnail = await getImage({
     </FadeIn>
 
     <ScrollReveal animation="scale">
-      <div class="trailer-container relative">
-        <!-- Glow effect behind video -->
-        <div class="absolute -inset-4 bg-gradient-to-r from-primary/35 via-secondary/35 to-primary/35 rounded-2xl blur-xl opacity-50 trailer-glow"></div>
-
-        <!-- Video embed -->
-        <div class="relative">
-          <VideoEmbed
-            videoId={trailer.videoId}
-            title={trailer.thumbnailAlt}
-            thumbnailUrl={optimizedThumbnail.src}
-            class="shadow-2xl"
-          />
-        </div>
-      </div>
+      <VideoEmbed
+        videoId={trailer.videoId}
+        title={trailer.thumbnailAlt}
+        thumbnailUrl={optimizedThumbnail.src}
+        class="shadow-2xl"
+      />
     </ScrollReveal>
   </div>
 </Section>
 
-<script>
-  import { gsap } from '../../scripts/gsap';
-
-  function initTrailer() {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-
-    // Subtle glow animation
-    gsap.to('.trailer-glow', {
-      opacity: 0.7,
-      scale: 1.02,
-      duration: 2,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
-  }
-
-  initTrailer();
-  document.addEventListener('astro:page-load', initTrailer);
-</script>

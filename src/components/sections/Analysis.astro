@@ -1,24 +1,13 @@
 ---
 import { analysis } from '../../data/content';
+import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
 import Text from '../ui/Text.astro';
 import Card from '../ui/Card.astro';
 import FadeIn from '../animation/FadeIn.astro';
 ---
 
-<div class="section-splash relative py-4 px-4 md:px-6">
-  <!-- Paint splash glow - top -->
-  <div
-    class="absolute -top-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
-    style="background: #E4AC5E;"
-  ></div>
-  <!-- Paint splash glow - bottom -->
-  <div
-    class="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
-    style="background: #E4AC5E;"
-  ></div>
-<section id="analysis" class="relative py-24 md:py-32 overflow-hidden bg-surface rounded-3xl max-w-[1400px] mx-auto z-10" style="box-shadow: 0 0 80px -20px #E4AC5E; border: 3px solid #E4AC5E;">
-  <div class="container mx-auto px-4 md:px-6 lg:px-8">
+<Section id="analysis" padding="xl" bgColor="rojo-oscuro">
   <div class="max-w-6xl mx-auto">
     <FadeIn>
       <Heading level={2} size="h2" class="text-center mb-16">
@@ -52,6 +41,4 @@ import FadeIn from '../animation/FadeIn.astro';
       ))}
     </div>
   </div>
-  </div>
-</section>
-</div>
+</Section>

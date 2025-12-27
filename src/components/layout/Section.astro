@@ -5,7 +5,12 @@ interface Props {
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   class?: string;
   fullHeight?: boolean;
-  bgColor?: 'green' | 'blue' | 'red' | 'golden' | 'none';
+  bgColor?:
+    | 'none' | 'white'
+    | 'verde-clarito' | 'verde-normal' | 'verde-oscuro'
+    | 'azul-clarito' | 'azul-normal' | 'azul-oscuro'
+    | 'rojo-clarito' | 'rojo-normal' | 'rojo-oscuro'
+    | 'beige-clarito' | 'beige-normal' | 'beige-oscuro';
 }
 
 const {
@@ -17,13 +22,26 @@ const {
   bgColor = 'none',
 } = Astro.props;
 
-// Light splash colors
-const splashColors = {
+// Color palette
+const bgColors = {
   none: '',
-  green: '#5AA87A',
-  blue: '#6B8DC4',
-  red: '#D45A5A',
-  golden: '#E4AC5E',
+  white: '#FFFFFF',
+  // Verde
+  'verde-clarito': '#7acba1',
+  'verde-normal': '#33845a',
+  'verde-oscuro': '#0b592f',
+  // Azul
+  'azul-clarito': '#8db5e9',
+  'azul-normal': '#325a8e',
+  'azul-oscuro': '#1b4377',
+  // Rojo
+  'rojo-clarito': '#fd8d86',
+  'rojo-normal': '#b12d28',
+  'rojo-oscuro': '#981412',
+  // Beige
+  'beige-clarito': '#feca77',
+  'beige-normal': '#d1861f',
+  'beige-oscuro': '#af7018',
 };
 
 const variants = {
@@ -42,40 +60,17 @@ const paddings = {
 };
 
 const heightClass = fullHeight ? 'min-h-screen' : '';
-const isFloating = bgColor !== 'none';
-const splashColor = splashColors[bgColor] || '';
-const cardClasses = isFloating
-  ? `${variants[variant]} ${paddings[padding]} ${heightClass} ${className} rounded-3xl max-w-[1400px] mx-auto relative z-10`
-  : `${variants[variant]} ${paddings[padding]} ${heightClass} ${className}`;
+const hasBgColor = bgColor !== 'none';
+const sectionBg = hasBgColor ? '' : variants[variant];
+const classes = `${sectionBg} ${paddings[padding]} ${heightClass} ${className}`;
 ---
 
-{isFloating ? (
-  <div class="section-splash relative py-4 px-4 md:px-6">
-    <!-- Paint splash glow - top -->
-    <div
-      class="absolute -top-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
-      style={`background: ${splashColor};`}
-    ></div>
-    <!-- Paint splash glow - bottom -->
-    <div
-      class="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
-      style={`background: ${splashColor};`}
-    ></div>
-    <!-- Floating card with colored shadow and border -->
-    <section
-      id={id}
-      class={cardClasses}
-      style={`box-shadow: 0 0 80px -20px ${splashColor}; border: 3px solid ${splashColor};`}
-    >
-      <div class="container mx-auto px-4 md:px-6 lg:px-8">
-        <slot />
-      </div>
-    </section>
+<section
+  id={id}
+  class={classes}
+  style={hasBgColor ? `background: ${bgColors[bgColor]};` : ''}
+>
+  <div class="container mx-auto px-4 md:px-6 lg:px-8">
+    <slot />
   </div>
-) : (
-  <section id={id} class={cardClasses}>
-    <div class="container mx-auto px-4 md:px-6 lg:px-8">
-      <slot />
-    </div>
-  </section>
-)}
+</section>

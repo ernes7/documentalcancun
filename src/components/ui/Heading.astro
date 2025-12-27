@@ -3,6 +3,7 @@ interface Props {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   size?: 'display' | 'h1' | 'h2' | 'h3' | 'h4';
   class?: string;
+  style?: string;
   gradient?: boolean;
 }
 
@@ -10,6 +11,7 @@ const {
   level = 2,
   size,
   class: className = '',
+  style,
   gradient = false,
 } = Astro.props;
 
@@ -41,6 +43,6 @@ const classes = `${baseStyles} ${sizeStyles[actualSize]} ${gradientStyles} ${cla
 const Tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 ---
 
-<Tag class={classes}>
+<Tag class={classes} style={style}>
   <slot />
 </Tag>
