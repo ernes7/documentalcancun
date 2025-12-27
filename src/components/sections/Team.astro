@@ -1,48 +1,112 @@
 ---
+import { Image } from 'astro:assets';
 import { team } from '../../data/content';
 import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
-import Text from '../ui/Text.astro';
-import Card from '../ui/Card.astro';
 import FadeIn from '../animation/FadeIn.astro';
+
+import ernestoImg from '../../assets/team/ernesto.png';
+import elizabethImg from '../../assets/team/elizabeth.jpg';
+import pamelaImg from '../../assets/team/pamela.png';
+
+const teamImages: Record<string, ImageMetadata> = {
+  ernesto: ernestoImg,
+  elizabeth: elizabethImg,
+  pamela: pamelaImg,
+};
 ---
 
 <Section id="team" variant="alt" padding="xl">
-  <div class="max-w-5xl mx-auto">
+  <div class="max-w-6xl mx-auto">
     <FadeIn>
-      <Heading level={2} size="h2" class="text-center mb-16">
+      <Heading level={2} size="h2" class="text-center mb-20">
         {team.title}
       </Heading>
     </FadeIn>
 
-    <div class="grid md:grid-cols-3 gap-8">
+    <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
       {team.members.map((member, index) => (
-        <FadeIn delay={0.15 * (index + 1)} direction="up">
-          <Card variant="default" hover={true} class="team-card text-center p-6 group">
-            <!-- Photo placeholder -->
-            <div class="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden bg-surface-elevated">
-              <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20"></div>
-              <div class="absolute inset-0 flex items-center justify-center text-text-muted">
-                <svg class="w-12 h-12 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
+        <FadeIn delay={0.2 * (index + 1)} direction="up">
+          <div class="team-member group cursor-pointer">
+            <!-- Large Portrait Photo -->
+            <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-6 bg-surface shadow-xl ring-1 ring-primary/30 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl">
+              <Image
+                src={teamImages[member.id]}
+                alt={member.name}
+                width={400}
+                height={533}
+                quality={95}
+                format="webp"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
+              />
+
+              <!-- Gradient overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+              <!-- Vignette effect -->
+              <div class="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
+
+              <!-- Brand color overlay on hover -->
+              <div class="absolute inset-0 bg-gradient-to-br from-primary/0 via-secondary/0 to-primary/0 group-hover:from-primary/30 group-hover:via-secondary/25 group-hover:to-primary/30 transition-all duration-500"></div>
+
               <!-- Glow on hover -->
-              <div class="absolute inset-0 rounded-full ring-2 ring-primary/0 group-hover:ring-primary/50 transition-all duration-300"></div>
+              <div class="absolute inset-0 ring-2 ring-primary/0 group-hover:ring-primary/60 rounded-2xl transition-all duration-500"></div>
             </div>
 
-            <!-- Name -->
-            <Heading level={3} size="h4" class="mb-2 group-hover:text-primary transition-colors duration-300">
-              {member.name}
-            </Heading>
-
-            <!-- Role -->
-            <Text variant="muted" class="text-sm uppercase tracking-wider">
-              {member.role}
-            </Text>
-          </Card>
+            <!-- Name & Role -->
+            <div class="text-center">
+              <h3 class="font-heading font-bold text-2xl lg:text-3xl text-text mb-2 transition-colors duration-300 group-hover:text-primary">
+                {member.name}
+              </h3>
+              <p class="text-secondary text-sm uppercase tracking-[0.2em] font-medium">
+                {member.role}
+              </p>
+            </div>
+          </div>
         </FadeIn>
       ))}
     </div>
   </div>
 </Section>
+
+<script>
+  import { gsap } from '../../scripts/gsap';
+
+  function initTeam() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    // Subtle parallax on team member photos
+    const members = document.querySelectorAll('.team-member');
+    members.forEach((member) => {
+      const img = member.querySelector('img');
+      if (!img) return;
+
+      member.addEventListener('mousemove', (e) => {
+        const rect = member.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        gsap.to(img, {
+          x: x * 10,
+          y: y * 10,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+      });
+
+      member.addEventListener('mouseleave', () => {
+        gsap.to(img, {
+          x: 0,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+        });
+      });
+    });
+  }
+
+  initTeam();
+  document.addEventListener('astro:page-load', initTeam);
+</script>

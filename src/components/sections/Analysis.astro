@@ -1,13 +1,24 @@
 ---
 import { analysis } from '../../data/content';
-import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
 import Text from '../ui/Text.astro';
 import Card from '../ui/Card.astro';
 import FadeIn from '../animation/FadeIn.astro';
 ---
 
-<Section id="analysis" variant="alt" padding="xl">
+<div class="section-splash relative py-4 px-4 md:px-6">
+  <!-- Paint splash glow - top -->
+  <div
+    class="absolute -top-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
+    style="background: #E4AC5E;"
+  ></div>
+  <!-- Paint splash glow - bottom -->
+  <div
+    class="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
+    style="background: #E4AC5E;"
+  ></div>
+<section id="analysis" class="relative py-24 md:py-32 overflow-hidden bg-surface rounded-3xl max-w-[1400px] mx-auto z-10" style="box-shadow: 0 0 80px -20px #E4AC5E; border: 3px solid #E4AC5E;">
+  <div class="container mx-auto px-4 md:px-6 lg:px-8">
   <div class="max-w-6xl mx-auto">
     <FadeIn>
       <Heading level={2} size="h2" class="text-center mb-16">
@@ -21,7 +32,7 @@ import FadeIn from '../animation/FadeIn.astro';
           <Card variant="glass" class="analysis-card p-8 h-full group">
             <!-- Icon/Number -->
             <div class="flex items-center gap-4 mb-6">
-              <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg group-hover:bg-primary group-hover:text-text transition-colors duration-300">
+              <div class="w-12 h-12 rounded-full bg-primary/40 flex items-center justify-center text-primary font-bold text-lg group-hover:bg-primary group-hover:text-text transition-colors duration-300">
                 {String(index + 1).padStart(2, '0')}
               </div>
               <Heading level={3} size="h3" class="group-hover:text-primary transition-colors duration-300">
@@ -35,10 +46,12 @@ import FadeIn from '../animation/FadeIn.astro';
             </Text>
 
             <!-- Decorative line -->
-            <div class="mt-6 h-px bg-gradient-to-r from-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            <div class="mt-6 h-px bg-gradient-to-r from-primary/80 to-transparent"></div>
           </Card>
         </FadeIn>
       ))}
     </div>
   </div>
-</Section>
+  </div>
+</section>
+</div>

@@ -1,10 +1,20 @@
 ---
+import { getImage } from 'astro:assets';
 import { trailer } from '../../data/content';
 import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
 import VideoEmbed from '../ui/VideoEmbed.astro';
 import FadeIn from '../animation/FadeIn.astro';
 import ScrollReveal from '../animation/ScrollReveal.astro';
+import heroBanner from '../../assets/hero/hero-banner.jpg';
+
+const optimizedThumbnail = await getImage({
+  src: heroBanner,
+  width: 1280,
+  height: 720,
+  format: 'webp',
+  quality: 95
+});
 ---
 
 <Section id="trailer" variant="default" padding="xl">
@@ -18,13 +28,14 @@ import ScrollReveal from '../animation/ScrollReveal.astro';
     <ScrollReveal animation="scale">
       <div class="trailer-container relative">
         <!-- Glow effect behind video -->
-        <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl blur-xl opacity-50 trailer-glow"></div>
+        <div class="absolute -inset-4 bg-gradient-to-r from-primary/35 via-secondary/35 to-primary/35 rounded-2xl blur-xl opacity-50 trailer-glow"></div>
 
         <!-- Video embed -->
         <div class="relative">
           <VideoEmbed
             videoId={trailer.videoId}
             title={trailer.thumbnailAlt}
+            thumbnailUrl={optimizedThumbnail.src}
             class="shadow-2xl"
           />
         </div>

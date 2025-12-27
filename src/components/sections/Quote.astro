@@ -1,19 +1,24 @@
 ---
+import { Image } from 'astro:assets';
 import { quote } from '../../data/content';
 import Parallax from '../animation/Parallax.astro';
+import impactImage from '../../assets/sections/impact.jpg';
 ---
 
 <section id="quote" class="quote-section vignette relative py-32 md:py-48 overflow-hidden">
-  <!-- Background image placeholder with parallax -->
+  <!-- Background image with parallax -->
   <Parallax speed={0.15} class="absolute inset-0 z-0">
     <div class="w-full h-[120%] bg-surface">
-      <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"></div>
-      <!-- Placeholder for impact photo -->
-      <div class="absolute inset-0 flex items-center justify-center opacity-20">
-        <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-      </div>
+      <Image
+        src={impactImage}
+        alt="Fotografía de impacto - zonas marginadas"
+        width={1920}
+        height={1080}
+        quality={95}
+        format="webp"
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
+      />
     </div>
   </Parallax>
 
@@ -33,7 +38,7 @@ import Parallax from '../animation/Parallax.astro';
   </div>
 
   <!-- Decorative elements -->
-  <div class="quote-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl z-0"></div>
+  <div class="quote-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/20 blur-3xl z-0"></div>
 </section>
 
 <script>
@@ -42,30 +47,54 @@ import Parallax from '../animation/Parallax.astro';
   function initQuote() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Character-by-character text reveal
+    // Character-by-character text reveal (word-aware to prevent breaking)
     const quoteText = document.querySelector('[data-text-reveal]') as HTMLElement;
     if (quoteText && !quoteText.hasAttribute('data-initialized')) {
       quoteText.setAttribute('data-initialized', 'true');
       const text = quoteText.textContent || '';
       quoteText.innerHTML = '';
 
-      // Split into characters with spans
-      text.split('').forEach(char => {
-        const span = document.createElement('span');
-        span.textContent = char === ' ' ? '\u00A0' : char;
-        span.style.display = 'inline-block';
-        if (!prefersReducedMotion) {
-          span.style.opacity = '0';
+      // Split into words first, then characters within each word
+      const words = text.split(' ');
+      words.forEach((word, wordIndex) => {
+        // Create a word wrapper to prevent breaking
+        const wordWrapper = document.createElement('span');
+        wordWrapper.style.whiteSpace = 'nowrap';
+        wordWrapper.style.display = 'inline-block';
+
+        // Split word into characters
+        word.split('').forEach(char => {
+          const span = document.createElement('span');
+          span.textContent = char;
+          span.style.display = 'inline-block';
+          if (!prefersReducedMotion) {
+            span.style.opacity = '0';
+          }
+          wordWrapper.appendChild(span);
+        });
+
+        quoteText.appendChild(wordWrapper);
+
+        // Add space between words (except after last word)
+        if (wordIndex < words.length - 1) {
+          const space = document.createElement('span');
+          space.innerHTML = '&nbsp;';
+          space.style.display = 'inline-block';
+          if (!prefersReducedMotion) {
+            space.style.opacity = '0';
+          }
+          quoteText.appendChild(space);
         }
-        quoteText.appendChild(span);
       });
 
       // Animate on scroll (unless reduced motion)
       if (!prefersReducedMotion) {
-        gsap.to(quoteText.children, {
+        // Get all character spans (inside word wrappers and spaces)
+        const allChars = quoteText.querySelectorAll('span span, span:not(:has(span))');
+        gsap.to(allChars, {
           opacity: 1,
           duration: 0.03,
-          stagger: 0.04,
+          stagger: 0.03,
           ease: 'none',
           scrollTrigger: {
             trigger: quoteText,

@@ -1,44 +1,87 @@
 @import "tailwindcss";
 
 /* ============================================
+   FONT FACES - ABC Social
+   ============================================ */
+
+@font-face {
+  font-family: 'ABC Social';
+  src: url('/fonts/ABCSocial-Light-Trial.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Social';
+  src: url('/fonts/ABCSocial-Regular-Trial.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Social';
+  src: url('/fonts/ABCSocial-Medium-Trial.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Social';
+  src: url('/fonts/ABCSocial-Bold-Trial.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
    THEME CONFIGURATION - Los Olvidos del Paraíso
    Dark & Cinematic Theme
    ============================================ */
 
 @theme {
-  /* Colors - Primary (desaturated deep ocean blue) */
-  --color-primary: oklch(0.50 0.08 220);
-  --color-primary-light: oklch(0.60 0.06 220);
-  --color-primary-dark: oklch(0.40 0.10 220);
+  /* Colors - Primary (Green from brand) */
+  --color-primary: #3B8A5E;
+  --color-primary-light: #5AA87A;
+  --color-primary-dark: #2D6B49;
 
-  /* Colors - Secondary (earth tones - terracotta/rust) */
-  --color-secondary: oklch(0.55 0.10 45);
-  --color-secondary-light: oklch(0.65 0.08 45);
-  --color-secondary-dark: oklch(0.45 0.12 45);
+  /* Colors - Secondary (Blue from brand) */
+  --color-secondary: #4A6FAD;
+  --color-secondary-light: #6B8DC4;
+  --color-secondary-dark: #3A5A8E;
+
+  /* Colors - Accent (Red from brand) */
+  --color-accent: #C13A3A;
+  --color-accent-light: #D45A5A;
+  --color-accent-dark: #9E2E2E;
+
+  /* Colors - Highlight (Golden from brand) */
+  --color-highlight: #D4943E;
+  --color-highlight-light: #E4AC5E;
+  --color-highlight-dark: #B57C2E;
 
   /* Colors - Background (dark cinematic) */
-  --color-background: oklch(0.12 0.02 260);
-  --color-background-alt: oklch(0.15 0.02 260);
-  --color-surface: oklch(0.18 0.02 260);
-  --color-surface-elevated: oklch(0.22 0.02 260);
+  --color-background: #0D0D0F;
+  --color-background-alt: #141416;
+  --color-surface: #1A1A1E;
+  --color-surface-elevated: #222226;
 
   /* Colors - Text */
-  --color-text: oklch(0.95 0.01 260);
-  --color-text-secondary: oklch(0.75 0.02 260);
-  --color-text-muted: oklch(0.55 0.02 260);
-
-  /* Colors - Accent (muted warm tone) */
-  --color-accent: oklch(0.60 0.12 35);
+  --color-text: #F5F5F5;
+  --color-text-secondary: #B8B8BC;
+  --color-text-muted: #6E6E74;
 
   /* Colors - Semantic */
-  --color-overlay: oklch(0.08 0.02 260 / 0.8);
-  --color-glass: oklch(0.18 0.02 260 / 0.6);
-  --color-glass-border: oklch(0.95 0.01 260 / 0.1);
+  --color-overlay: rgba(13, 13, 15, 0.8);
+  --color-glass: rgba(26, 26, 30, 0.6);
+  --color-glass-border: rgba(245, 245, 245, 0.1);
 
   /* Typography - Font Families */
-  --font-heading: 'Maven Pro', system-ui, sans-serif;
-  --font-body: 'Maven Pro', system-ui, sans-serif;
-  --font-accent: 'Maven Pro', system-ui, sans-serif;
+  --font-heading: 'ABC Social', system-ui, sans-serif;
+  --font-body: 'ABC Social', system-ui, sans-serif;
+  --font-accent: 'ABC Social', system-ui, sans-serif;
 
   /* Typography - Font Sizes */
   --text-display: 4.5rem;
@@ -73,7 +116,7 @@
   --shadow-md: 0 4px 6px oklch(0 0 0 / 0.4);
   --shadow-lg: 0 10px 15px oklch(0 0 0 / 0.5);
   --shadow-xl: 0 20px 25px oklch(0 0 0 / 0.6);
-  --shadow-glow: 0 0 30px oklch(0.50 0.08 220 / 0.3);
+  --shadow-glow: 0 0 30px rgba(59, 138, 94, 0.3);
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -278,8 +321,22 @@ body {
   90% { transform: translate(1%, 0%); }
 }
 
+/* Animated gradient for team section */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 4s ease infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .film-grain::before {
+  .film-grain::before,
+  .animate-gradient-shift {
     animation: none;
   }
 }

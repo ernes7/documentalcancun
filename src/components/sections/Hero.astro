@@ -12,7 +12,6 @@ import { hero } from '../../data/content';
       loop
       playsinline
       class="absolute inset-0 w-full h-full object-cover"
-      poster="/images/hero/hero-poster.jpg"
     >
       <source src="/images/hero/hero-video.mp4" type="video/mp4" />
     </video>
@@ -28,7 +27,7 @@ import { hero } from '../../data/content';
   <div class="hero-content relative z-10 container mx-auto px-4 md:px-6 lg:px-8 text-center">
     <!-- Title -->
     <div class="hero-title overflow-hidden mb-8">
-      <h1 class="hero-title-text font-heading font-black text-6xl md:text-8xl lg:text-9xl leading-[1] tracking-tight uppercase bg-gradient-to-r from-yellow-400 via-red-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+      <h1 class="hero-title-text font-heading font-black text-6xl md:text-8xl lg:text-9xl leading-[1] tracking-tight uppercase bg-gradient-to-r from-[#D4943E] via-[#C13A3A] to-[#4A6FAD] bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
         {hero.title}
       </h1>
     </div>
@@ -48,17 +47,9 @@ import { hero } from '../../data/content';
     </div>
   </div>
 
-  <!-- Scroll indicator (outside hero-content for correct positioning) -->
-  <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
-    <div class="flex flex-col items-center gap-2 text-text-muted">
-      <span class="text-xs uppercase tracking-widest">Scroll</span>
-      <div class="w-px h-12 bg-gradient-to-b from-text-muted to-transparent scroll-line"></div>
-    </div>
-  </div>
-
   <!-- Floating elements for visual interest -->
-  <div class="hero-float-1 absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-3xl"></div>
-  <div class="hero-float-2 absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-secondary/5 blur-3xl"></div>
+  <div class="hero-float-1 absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/20 blur-3xl"></div>
+  <div class="hero-float-2 absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-secondary/20 blur-3xl"></div>
 </section>
 
 <script>
@@ -68,7 +59,7 @@ import { hero } from '../../data/content';
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReducedMotion) {
-      gsap.set('.hero-title-text, .hero-tagline, .hero-subtitle, .hero-scroll', {
+      gsap.set('.hero-title-text, .hero-tagline, .hero-subtitle', {
         opacity: 1,
         y: 0,
       });
@@ -94,12 +85,6 @@ import { hero } from '../../data/content';
         { opacity: 0, y: 15 },
         { opacity: 1, y: 0, duration: 1.0 },
         '-=0.6'
-      )
-      .fromTo(
-        '.hero-scroll',
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8 },
-        '-=0.3'
       );
 
     // Continuous floating animations (slower, more subtle for documentary feel)
@@ -116,16 +101,6 @@ import { hero } from '../../data/content';
       y: -20,
       x: -12,
       duration: 15,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
-
-    // Scroll line animation (slower)
-    gsap.to('.scroll-line', {
-      scaleY: 0.5,
-      transformOrigin: 'top',
-      duration: 2.5,
       repeat: -1,
       yoyo: true,
       ease: 'sine.inOut',

@@ -3,7 +3,7 @@ import { navigation } from '../../data/content';
 ---
 
 <nav
-  class="navigation-dock fixed bottom-6 left-1/2 -translate-x-1/2 z-navigation opacity-0 translate-y-4"
+  class="navigation-dock fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] opacity-0 translate-y-4"
   aria-label="Navegación principal"
 >
   <div class="glass-strong rounded-full px-3 py-3 shadow-xl">
@@ -12,7 +12,7 @@ import { navigation } from '../../data/content';
         <li>
           <a
             href={item.href}
-            class="nav-link block px-5 py-2.5 text-body font-medium text-text-secondary rounded-full transition-all duration-300 hover:text-text hover:bg-surface-elevated/50"
+            class="nav-link block px-5 py-2.5 text-body font-medium text-text-secondary rounded-full transition-all duration-300 hover:text-primary hover:bg-surface-elevated/50"
             data-nav-id={item.id}
           >
             {item.label}
@@ -61,10 +61,10 @@ import { navigation } from '../../data/content';
             navLinks.forEach((link) => {
               const linkId = link.getAttribute('data-nav-id');
               if (linkId === id) {
-                link.classList.add('text-text', 'bg-surface-elevated/50');
+                link.classList.add('active-nav', 'bg-[#3B8A5E]', 'text-white');
                 link.classList.remove('text-text-secondary');
               } else {
-                link.classList.remove('text-text', 'bg-surface-elevated/50');
+                link.classList.remove('active-nav', 'bg-[#3B8A5E]', 'text-white');
                 link.classList.add('text-text-secondary');
               }
             });

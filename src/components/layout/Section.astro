@@ -5,6 +5,7 @@ interface Props {
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   class?: string;
   fullHeight?: boolean;
+  bgColor?: 'green' | 'blue' | 'red' | 'golden' | 'none';
 }
 
 const {
@@ -13,7 +14,17 @@ const {
   padding = 'lg',
   class: className = '',
   fullHeight = false,
+  bgColor = 'none',
 } = Astro.props;
+
+// Light splash colors
+const splashColors = {
+  none: '',
+  green: '#5AA87A',
+  blue: '#6B8DC4',
+  red: '#D45A5A',
+  golden: '#E4AC5E',
+};
 
 const variants = {
   default: 'bg-background',
@@ -31,12 +42,40 @@ const paddings = {
 };
 
 const heightClass = fullHeight ? 'min-h-screen' : '';
-
-const classes = `${variants[variant]} ${paddings[padding]} ${heightClass} ${className}`;
+const isFloating = bgColor !== 'none';
+const splashColor = splashColors[bgColor] || '';
+const cardClasses = isFloating
+  ? `${variants[variant]} ${paddings[padding]} ${heightClass} ${className} rounded-3xl max-w-[1400px] mx-auto relative z-10`
+  : `${variants[variant]} ${paddings[padding]} ${heightClass} ${className}`;
 ---
 
-<section id={id} class={classes}>
-  <div class="container mx-auto px-4 md:px-6 lg:px-8">
-    <slot />
+{isFloating ? (
+  <div class="section-splash relative py-4 px-4 md:px-6">
+    <!-- Paint splash glow - top -->
+    <div
+      class="absolute -top-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
+      style={`background: ${splashColor};`}
+    ></div>
+    <!-- Paint splash glow - bottom -->
+    <div
+      class="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[80%] h-[150px] blur-[80px] opacity-40 z-0"
+      style={`background: ${splashColor};`}
+    ></div>
+    <!-- Floating card with colored shadow and border -->
+    <section
+      id={id}
+      class={cardClasses}
+      style={`box-shadow: 0 0 80px -20px ${splashColor}; border: 3px solid ${splashColor};`}
+    >
+      <div class="container mx-auto px-4 md:px-6 lg:px-8">
+        <slot />
+      </div>
+    </section>
   </div>
-</section>
+) : (
+  <section id={id} class={cardClasses}>
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+      <slot />
+    </div>
+  </section>
+)}

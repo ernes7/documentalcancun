@@ -1,11 +1,35 @@
 ---
+import { Image } from 'astro:assets';
 import { gallery } from '../../data/content';
 import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
 import FadeIn from '../animation/FadeIn.astro';
+
+// Import gallery images for optimization
+import gallery01 from '../../assets/gallery/01.jpg';
+import gallery02 from '../../assets/gallery/02.jpg';
+import gallery03 from '../../assets/gallery/03.jpg';
+import gallery04 from '../../assets/gallery/04.jpg';
+import gallery05 from '../../assets/gallery/05.jpg';
+import gallery06 from '../../assets/gallery/06.jpg';
+import gallery07 from '../../assets/gallery/07.jpg';
+import gallery08 from '../../assets/gallery/08.jpg';
+import gallery09 from '../../assets/gallery/09.jpg';
+
+const galleryImages = [
+  { src: gallery01, alt: gallery.images[0].alt },
+  { src: gallery02, alt: gallery.images[1].alt },
+  { src: gallery03, alt: gallery.images[2].alt },
+  { src: gallery04, alt: gallery.images[3].alt },
+  { src: gallery05, alt: gallery.images[4].alt },
+  { src: gallery06, alt: gallery.images[5].alt },
+  { src: gallery07, alt: gallery.images[6].alt },
+  { src: gallery08, alt: gallery.images[7].alt },
+  { src: gallery09, alt: gallery.images[8].alt },
+];
 ---
 
-<Section id="gallery" variant="default" padding="xl">
+<Section id="gallery" variant="default" padding="xl" bgColor="red">
   <div class="max-w-6xl mx-auto">
     <FadeIn>
       <Heading level={2} size="h2" class="text-center mb-16">
@@ -15,7 +39,7 @@ import FadeIn from '../animation/FadeIn.astro';
 
     <!-- Masonry Grid -->
     <div class="gallery-grid grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-      {gallery.images.map((image, index) => {
+      {galleryImages.map((image, index) => {
         // Create visual variety with different sizes
         const isLarge = index === 0 || index === 4 || index === 8;
         const sizeClass = isLarge ? 'row-span-2' : '';
@@ -30,20 +54,20 @@ import FadeIn from '../animation/FadeIn.astro';
             >
               <!-- Aspect ratio container -->
               <div class={`${isLarge ? 'aspect-[3/4]' : 'aspect-square'}`}>
-                <!-- Placeholder -->
-                <div class="absolute inset-0 bg-gradient-to-br from-surface to-surface-elevated">
-                  <div class="absolute inset-0 flex items-center justify-center text-text-muted">
-                    <div class="text-center">
-                      <svg class="w-8 h-8 mx-auto mb-2 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <span class="text-xs opacity-50">{String(index + 1).padStart(2, '0')}</span>
-                    </div>
-                  </div>
-                </div>
+                <!-- Optimized gallery image -->
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  widths={[600, 1200, 1800]}
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  quality={95}
+                  format="webp"
+                  class="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
 
                 <!-- Hover overlay -->
-                <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/20 transition-colors duration-300"></div>
+                <div class="absolute inset-0 bg-primary/10 group-hover:bg-primary/25 transition-colors duration-300"></div>
 
                 <!-- Zoom icon on hover -->
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -82,7 +82,7 @@ export const team = {
       id: 'ernesto',
       name: 'Ernesto Arenas',
       role: 'Director',
-      image: '/images/team/ernesto.jpg',
+      image: '/images/team/ernesto.png',
     },
     {
       id: 'elizabeth',
@@ -94,7 +94,7 @@ export const team = {
       id: 'pamela',
       name: 'Pamela Pale',
       role: 'Diseño Sonoro y Edición',
-      image: '/images/team/pamela.jpg',
+      image: '/images/team/pamela.png',
     },
   ],
 };
