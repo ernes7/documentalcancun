@@ -19,7 +19,6 @@ export const meta = {
 export const hero = {
   title: 'Los Olvidos del Paraíso',
   tagline: 'No todos habitan en el paraíso que ayudaron a construir',
-  subtitle: 'Una exploración documental crítica y necesaria',
 };
 
 export const introduction = {
@@ -111,6 +110,9 @@ export const gallery = {
     { id: 7, src: '/images/gallery/07.jpg', alt: 'Escena del documental 7' },
     { id: 8, src: '/images/gallery/08.jpg', alt: 'Escena del documental 8' },
     { id: 9, src: '/images/gallery/09.jpg', alt: 'Escena del documental 9' },
+    { id: 10, src: '/images/gallery/10.png', alt: 'Chabola rústica con techo de lámina y valla de malla en Cancún' },
+    { id: 11, src: '/images/gallery/11.png', alt: 'Dos personas en un entorno documental, momento de conversación' },
+    { id: 12, src: '/images/gallery/12.png', alt: 'Retrato de un hombre mayor con expresión amable y serena' },
   ],
 };
 
