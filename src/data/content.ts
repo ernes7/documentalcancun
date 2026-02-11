@@ -69,8 +69,7 @@ export const analysis = {
 
 export const trailer = {
   title: 'Ver Trailer',
-  // YouTube video ID - update when available
-  videoId: 'dQw4w9WgXcQ', // Placeholder
+  videoSrc: '/videos/portada.mp4',
   thumbnailAlt: 'Trailer de Los Olvidos del Paraíso',
 };
 
