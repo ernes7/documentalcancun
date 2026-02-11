@@ -69,7 +69,7 @@ export const analysis = {
 
 export const trailer = {
   title: 'Ver Trailer',
-  videoSrc: '/videos/portada.mov',
+  videoSrc: '/videos/portada.mp4',
   thumbnailAlt: 'Trailer de Los Olvidos del Paraíso',
 };
 
