@@ -3,7 +3,6 @@ import { getImage } from 'astro:assets';
 import { trailer } from '../../data/content';
 import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
-import VideoEmbed from '../ui/VideoEmbed.astro';
 import FadeIn from '../animation/FadeIn.astro';
 import ScrollReveal from '../animation/ScrollReveal.astro';
 import heroBanner from '../../assets/hero/hero-banner.jpg';
@@ -26,13 +25,89 @@ const optimizedThumbnail = await getImage({
     </FadeIn>
 
     <ScrollReveal animation="scale">
-      <VideoEmbed
-        videoId={trailer.videoId}
-        title={trailer.thumbnailAlt}
-        thumbnailUrl={optimizedThumbnail.src}
-        class="shadow-2xl"
-      />
+      <div
+        class="trailer-player relative aspect-video bg-surface rounded-xl overflow-hidden cursor-pointer group shadow-2xl"
+        role="button"
+        tabindex="0"
+        aria-label={`Reproducir: ${trailer.thumbnailAlt}`}
+      >
+        <!-- Thumbnail -->
+        <img
+          src={optimizedThumbnail.src}
+          alt={trailer.thumbnailAlt}
+          loading="lazy"
+          class="trailer-poster absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+
+        <!-- Overlay gradient -->
+        <div class="trailer-overlay absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+
+        <!-- Play button -->
+        <div class="trailer-play absolute inset-0 flex items-center justify-center">
+          <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary/90 flex items-center justify-center shadow-glow transition-all duration-300 group-hover:scale-110 group-hover:bg-primary">
+            <svg
+              class="w-8 h-8 md:w-10 md:h-10 text-text ml-1"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Video element (hidden until play) -->
+        <video
+          class="trailer-video absolute inset-0 w-full h-full object-cover hidden"
+          controls
+          preload="none"
+        >
+          <source src={trailer.videoSrc} type="video/mp4" />
+        </video>
+      </div>
     </ScrollReveal>
   </div>
 </Section>
 
+<script>
+  function initTrailerPlayer() {
+    const players = document.querySelectorAll('.trailer-player:not([data-initialized])');
+
+    players.forEach((player) => {
+      player.setAttribute('data-initialized', 'true');
+
+      const video = player.querySelector('.trailer-video') as HTMLVideoElement;
+      const poster = player.querySelector('.trailer-poster') as HTMLElement;
+      const overlay = player.querySelector('.trailer-overlay') as HTMLElement;
+      const playBtn = player.querySelector('.trailer-play') as HTMLElement;
+
+      if (!video) return;
+
+      const handlePlay = () => {
+        poster.classList.add('hidden');
+        overlay.classList.add('hidden');
+        playBtn.classList.add('hidden');
+        video.classList.remove('hidden');
+        video.play();
+        player.classList.remove('cursor-pointer');
+        player.removeAttribute('role');
+        player.removeAttribute('tabindex');
+      };
+
+      player.addEventListener('click', (e) => {
+        if ((e.target as Element).closest('.trailer-video')) return;
+        handlePlay();
+      });
+
+      player.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+          e.preventDefault();
+          handlePlay();
+        }
+      });
+    });
+  }
+
+  initTrailerPlayer();
+  document.addEventListener('astro:page-load', initTrailerPlayer);
+</script>
