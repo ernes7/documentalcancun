@@ -8,14 +8,14 @@ import FadeIn from '../animation/FadeIn.astro';
 <Section id="synopsis" variant="default" padding="xl" bgColor="verde-oscuro">
   <div class="max-w-4xl mx-auto text-center">
     <FadeIn>
-      <Heading level={2} size="h2" class="mb-12" style="color: #f5f5f5;">
+      <Heading level={2} size="h2" class="mb-12 text-white">
         {synopsis.title}
       </Heading>
     </FadeIn>
 
     <FadeIn delay={0.2}>
       <div class="synopsis-text">
-        <p class="text-xl md:text-2xl leading-relaxed font-light" style="color: #f5f5f5;">
+        <p class="text-xl md:text-2xl leading-relaxed font-light text-white">
           {synopsis.text}
         </p>
       </div>

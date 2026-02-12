@@ -120,6 +120,7 @@ export const navigation = {
     { id: 'hero', label: 'Inicio', href: '#hero' },
     { id: 'analysis', label: 'Análisis', href: '#analysis' },
     { id: 'trailer', label: 'Trailer', href: '#trailer' },
+    { id: 'nominaciones', label: 'Nominaciones', href: '#nominaciones' },
     { id: 'gallery', label: 'Galería', href: '#gallery' },
   ],
 };

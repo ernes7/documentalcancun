@@ -6,7 +6,7 @@ interface Props {
   class?: string;
   fullHeight?: boolean;
   bgColor?:
-    | 'none' | 'white'
+    | 'none' | 'white' | 'black'
     | 'verde-clarito' | 'verde-normal' | 'verde-oscuro'
     | 'azul-clarito' | 'azul-normal' | 'azul-oscuro'
     | 'rojo-clarito' | 'rojo-normal' | 'rojo-oscuro'
@@ -26,6 +26,7 @@ const {
 const bgColors = {
   none: '',
   white: '#FFFFFF',
+  black: '#000000',
   // Verde
   'verde-clarito': '#7acba1',
   'verde-normal': '#33845a',

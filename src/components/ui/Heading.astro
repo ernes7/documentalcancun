@@ -35,8 +35,8 @@ const sizeStyles: Record<string, string> = {
   h4: 'text-h4 leading-snug',
 };
 
-const baseStyles = 'font-heading font-bold text-text';
-const gradientStyles = gradient ? 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent' : '';
+const baseStyles = 'font-heading font-bold text-white';
+const gradientStyles = gradient ? 'text-white' : '';
 
 const classes = `${baseStyles} ${sizeStyles[actualSize]} ${gradientStyles} ${className}`;
 
