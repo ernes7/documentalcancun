@@ -19,7 +19,7 @@ const teamImages: Record<string, ImageMetadata> = {
 <Section id="team" variant="default" padding="xl">
   <div class="max-w-6xl mx-auto">
     <FadeIn>
-      <Heading level={2} size="h2" class="text-center mb-20" style="color: #feca77;">
+      <Heading level={2} size="h2" class="text-center mb-20 text-white">
         {team.title}
       </Heading>
     </FadeIn>
@@ -29,7 +29,7 @@ const teamImages: Record<string, ImageMetadata> = {
         <FadeIn delay={0.2 * (index + 1)} direction="up">
           <div class="team-member group cursor-pointer">
             <!-- Large Portrait Photo -->
-            <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-6 bg-surface shadow-xl transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl" style="--ring-color: rgba(254, 202, 119, 0.3); box-shadow: 0 0 0 1px var(--ring-color);">
+            <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-6 bg-surface shadow-xl transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl" style="--ring-color: rgba(255, 255, 255, 0.5); box-shadow: 0 0 0 1px var(--ring-color);">
               <Image
                 src={teamImages[member.id]}
                 alt={member.name}
@@ -53,10 +53,10 @@ const teamImages: Record<string, ImageMetadata> = {
 
             <!-- Name & Role -->
             <div class="text-center">
-              <h3 class="font-heading font-bold text-2xl lg:text-3xl mb-2 transition-colors duration-300" style="color: #feca77;">
+              <h3 class="font-heading font-bold text-2xl lg:text-3xl mb-2 transition-colors duration-300 text-white">
                 {member.name}
               </h3>
-              <p class="text-sm uppercase tracking-[0.2em] font-medium" style="color: #feca77; opacity: 0.8;">
+              <p class="text-sm uppercase tracking-[0.2em] font-medium text-white opacity-80">
                 {member.role}
               </p>
             </div>

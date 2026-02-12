@@ -14,12 +14,12 @@ const {
 const baseStyles = 'rounded-xl overflow-hidden transition-all duration-300';
 
 const variants = {
-  default: 'bg-surface border border-glass-border',
+  default: 'bg-surface border border-white',
   glass: 'glass',
   elevated: 'bg-surface-elevated shadow-lg',
 };
 
-const hoverStyles = hover ? 'hover:scale-[1.02] hover:shadow-xl hover:border-primary/30' : '';
+const hoverStyles = hover ? 'hover:scale-[1.02] hover:shadow-xl hover:border-white' : '';
 
 const classes = `${baseStyles} ${variants[variant]} ${hoverStyles} ${className}`;
 ---

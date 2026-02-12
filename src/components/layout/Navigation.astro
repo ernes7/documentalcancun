@@ -23,7 +23,7 @@ import { navigation } from '../../data/content';
           <li>
             <a
               href={item.href}
-              class="nav-link block px-4 py-2 text-sm font-medium text-text-secondary rounded-full transition-all duration-300 hover:text-primary hover:bg-surface-elevated/50"
+              class="nav-link block px-4 py-2 text-sm font-medium text-white rounded-full transition-all duration-300 hover:text-white hover:bg-surface-elevated/50"
               data-nav-id={item.id}
             >
               {item.label}
@@ -38,9 +38,9 @@ import { navigation } from '../../data/content';
         aria-label="Abrir menú"
         aria-expanded="false"
       >
-        <span class="navbar-toggle-bar w-6 h-0.5 bg-text-secondary transition-all duration-300 origin-center"></span>
-        <span class="navbar-toggle-bar w-6 h-0.5 bg-text-secondary transition-all duration-300 origin-center"></span>
-        <span class="navbar-toggle-bar w-6 h-0.5 bg-text-secondary transition-all duration-300 origin-center"></span>
+        <span class="navbar-toggle-bar w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
+        <span class="navbar-toggle-bar w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
+        <span class="navbar-toggle-bar w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
       </button>
     </div>
   </div>
@@ -52,7 +52,7 @@ import { navigation } from '../../data/content';
         <li>
           <a
             href={item.href}
-            class="nav-link-mobile block px-4 py-3 text-base font-medium text-text-secondary rounded-lg transition-all duration-300 hover:text-primary hover:bg-surface-elevated/50"
+            class="nav-link-mobile block px-4 py-3 text-base font-medium text-white rounded-lg transition-all duration-300 hover:text-white hover:bg-surface-elevated/50"
             data-nav-id={item.id}
           >
             {item.label}
@@ -103,11 +103,11 @@ import { navigation } from '../../data/content';
             navLinks.forEach((link) => {
               const linkId = link.getAttribute('data-nav-id');
               if (linkId === id) {
-                link.classList.add('active-nav', 'bg-[#3B8A5E]', 'text-white');
-                link.classList.remove('text-text-secondary');
+                link.classList.add('active-nav', 'bg-white/20', 'text-white');
+                link.classList.remove('text-white');
               } else {
-                link.classList.remove('active-nav', 'bg-[#3B8A5E]', 'text-white');
-                link.classList.add('text-text-secondary');
+                link.classList.remove('active-nav', 'bg-white/20', 'text-white');
+                link.classList.add('text-white');
               }
             });
           }
