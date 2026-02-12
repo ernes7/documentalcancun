@@ -30,8 +30,12 @@ import { hero } from '../../data/content';
   <div class="hero-content relative z-10 container mx-auto px-4 md:px-6 lg:px-8 text-center">
     <!-- Title -->
     <div class="hero-title overflow-hidden mb-8">
-      <h1 class="hero-title-text font-heading font-black text-6xl md:text-8xl lg:text-9xl leading-[1] tracking-tight uppercase bg-gradient-to-r from-[#D4943E] via-[#C13A3A] to-[#4A6FAD] bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-        {hero.title}
+      <h1 class="hero-title-text">
+        <img
+          src="/images/logo.png"
+          alt={hero.title}
+          class="mx-auto w-full max-w-5xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+        />
       </h1>
     </div>
 
