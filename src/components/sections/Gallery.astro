@@ -5,7 +5,25 @@ import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
 import FadeIn from '../animation/FadeIn.astro';
 
-// Import gallery images for optimization
+// Import new gallery images (shown first)
+import galleryL01 from '../../assets/gallery/L1000967.webp';
+import galleryL02 from '../../assets/gallery/L1001673.webp';
+import galleryL03 from '../../assets/gallery/L1010095.webp';
+import galleryL04 from '../../assets/gallery/L1010244.webp';
+import galleryL05 from '../../assets/gallery/L1010273.webp';
+import galleryL06 from '../../assets/gallery/L1010440.webp';
+import galleryL07 from '../../assets/gallery/L1010597.webp';
+import galleryL08 from '../../assets/gallery/L1010773.webp';
+import galleryL09 from '../../assets/gallery/L1010794.webp';
+import galleryL10 from '../../assets/gallery/L1020223.webp';
+import galleryL11 from '../../assets/gallery/L1020300.webp';
+import galleryL12 from '../../assets/gallery/L1020334.webp';
+import galleryL13 from '../../assets/gallery/L1020345.webp';
+import galleryL14 from '../../assets/gallery/L1020422.webp';
+import galleryL15 from '../../assets/gallery/L1020440.webp';
+import galleryL16 from '../../assets/gallery/L1020449.webp';
+
+// Import existing gallery images
 import gallery01 from '../../assets/gallery/01.jpg';
 import gallery02 from '../../assets/gallery/02.jpg';
 import gallery03 from '../../assets/gallery/03.jpg';
@@ -20,18 +38,36 @@ import gallery11 from '../../assets/gallery/11.png';
 import gallery12 from '../../assets/gallery/12.png';
 
 const galleryImages = [
-  { src: gallery01, alt: gallery.images[0].alt },
-  { src: gallery02, alt: gallery.images[1].alt },
-  { src: gallery03, alt: gallery.images[2].alt },
-  { src: gallery04, alt: gallery.images[3].alt },
-  { src: gallery05, alt: gallery.images[4].alt },
-  { src: gallery06, alt: gallery.images[5].alt },
-  { src: gallery07, alt: gallery.images[6].alt },
-  { src: gallery08, alt: gallery.images[7].alt },
-  { src: gallery09, alt: gallery.images[8].alt },
-  { src: gallery10, alt: gallery.images[9].alt },
-  { src: gallery11, alt: gallery.images[10].alt },
-  { src: gallery12, alt: gallery.images[11].alt },
+  // New photos first
+  { src: galleryL01, alt: gallery.images[0].alt },
+  { src: galleryL02, alt: gallery.images[1].alt },
+  { src: galleryL03, alt: gallery.images[2].alt },
+  { src: galleryL04, alt: gallery.images[3].alt },
+  { src: galleryL05, alt: gallery.images[4].alt },
+  { src: galleryL06, alt: gallery.images[5].alt },
+  { src: galleryL07, alt: gallery.images[6].alt },
+  { src: galleryL08, alt: gallery.images[7].alt },
+  { src: galleryL09, alt: gallery.images[8].alt },
+  { src: galleryL10, alt: gallery.images[9].alt },
+  { src: galleryL11, alt: gallery.images[10].alt },
+  { src: galleryL12, alt: gallery.images[11].alt },
+  { src: galleryL13, alt: gallery.images[12].alt },
+  { src: galleryL14, alt: gallery.images[13].alt },
+  { src: galleryL15, alt: gallery.images[14].alt },
+  { src: galleryL16, alt: gallery.images[15].alt },
+  // Existing photos
+  { src: gallery01, alt: gallery.images[16].alt },
+  { src: gallery02, alt: gallery.images[17].alt },
+  { src: gallery03, alt: gallery.images[18].alt },
+  { src: gallery04, alt: gallery.images[19].alt },
+  { src: gallery05, alt: gallery.images[20].alt },
+  { src: gallery06, alt: gallery.images[21].alt },
+  { src: gallery07, alt: gallery.images[22].alt },
+  { src: gallery08, alt: gallery.images[23].alt },
+  { src: gallery09, alt: gallery.images[24].alt },
+  { src: gallery10, alt: gallery.images[25].alt },
+  { src: gallery11, alt: gallery.images[26].alt },
+  { src: gallery12, alt: gallery.images[27].alt },
 ];
 ---
 

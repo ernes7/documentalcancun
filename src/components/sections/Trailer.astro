@@ -14,6 +14,8 @@ const optimizedThumbnail = await getImage({
   format: 'webp',
   quality: 95
 });
+
+const youtubeVideoId = '5g4PwJZ13eU';
 ---
 
 <Section id="trailer" variant="default" padding="xl">
@@ -30,6 +32,7 @@ const optimizedThumbnail = await getImage({
         role="button"
         tabindex="0"
         aria-label={`Reproducir: ${trailer.thumbnailAlt}`}
+        data-video-id={youtubeVideoId}
       >
         <!-- Thumbnail -->
         <img
@@ -56,14 +59,10 @@ const optimizedThumbnail = await getImage({
           </div>
         </div>
 
-        <!-- Video element (hidden until play) -->
-        <video
-          class="trailer-video absolute inset-0 w-full h-full object-cover hidden"
-          controls
-          preload="none"
-        >
-          <source src={trailer.videoSrc} type="video/mp4" />
-        </video>
+        <!-- YouTube iframe container (hidden until play) -->
+        <div class="trailer-iframe-container absolute inset-0 hidden">
+          <div id="trailer-yt-player" class="w-full h-full"></div>
+        </div>
       </div>
     </ScrollReveal>
   </div>
@@ -76,26 +75,102 @@ const optimizedThumbnail = await getImage({
     players.forEach((player) => {
       player.setAttribute('data-initialized', 'true');
 
-      const video = player.querySelector('.trailer-video') as HTMLVideoElement;
       const poster = player.querySelector('.trailer-poster') as HTMLElement;
       const overlay = player.querySelector('.trailer-overlay') as HTMLElement;
       const playBtn = player.querySelector('.trailer-play') as HTMLElement;
+      const iframeContainer = player.querySelector('.trailer-iframe-container') as HTMLElement;
+      const videoId = player.getAttribute('data-video-id');
 
-      if (!video) return;
+      if (!videoId) return;
 
-      const handlePlay = () => {
+      let ytPlayer: YT.Player | null = null;
+      let isPlaying = false;
+
+      function showPlayer() {
         poster.classList.add('hidden');
         overlay.classList.add('hidden');
         playBtn.classList.add('hidden');
-        video.classList.remove('hidden');
-        video.play();
+        iframeContainer.classList.remove('hidden');
         player.classList.remove('cursor-pointer');
         player.removeAttribute('role');
         player.removeAttribute('tabindex');
-      };
+        isPlaying = true;
+      }
+
+      function resetToInitial() {
+        iframeContainer.classList.add('hidden');
+        poster.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+        playBtn.classList.remove('hidden');
+        player.classList.add('cursor-pointer');
+        player.setAttribute('role', 'button');
+        player.setAttribute('tabindex', '0');
+        isPlaying = false;
+
+        // Destroy the player so a fresh one is created on next click
+        if (ytPlayer) {
+          ytPlayer.destroy();
+          ytPlayer = null;
+        }
+      }
+
+      function loadYTApi(): Promise<void> {
+        return new Promise((resolve) => {
+          if (window.YT && window.YT.Player) {
+            resolve();
+            return;
+          }
+          // If script is already loading, wait for callback
+          if (document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+            const check = setInterval(() => {
+              if (window.YT && window.YT.Player) {
+                clearInterval(check);
+                resolve();
+              }
+            }, 100);
+            return;
+          }
+          const tag = document.createElement('script');
+          tag.src = 'https://www.youtube.com/iframe_api';
+          document.head.appendChild(tag);
+          (window as any).onYouTubeIframeAPIReady = () => resolve();
+        });
+      }
+
+      async function handlePlay() {
+        if (isPlaying) return;
+        showPlayer();
+
+        await loadYTApi();
+
+        const targetEl = iframeContainer.querySelector('#trailer-yt-player') || iframeContainer;
+
+        // Create a fresh div for the player
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'w-full h-full';
+        iframeContainer.innerHTML = '';
+        iframeContainer.appendChild(playerDiv);
+
+        ytPlayer = new YT.Player(playerDiv, {
+          videoId: videoId!,
+          playerVars: {
+            autoplay: 1,
+            rel: 0,
+            modestbranding: 1,
+          },
+          events: {
+            onStateChange: (event: YT.OnStateChangeEvent) => {
+              // YT.PlayerState.ENDED === 0
+              if (event.data === 0) {
+                resetToInitial();
+              }
+            },
+          },
+        });
+      }
 
       player.addEventListener('click', (e) => {
-        if ((e.target as Element).closest('.trailer-video')) return;
+        if ((e.target as Element).closest('.trailer-iframe-container')) return;
         handlePlay();
       });
 
