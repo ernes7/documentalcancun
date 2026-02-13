@@ -118,8 +118,8 @@ export const gallery = {
 export const navigation = {
   items: [
     { id: 'hero', label: 'Inicio', href: '#hero' },
-    { id: 'analysis', label: 'Análisis', href: '#analysis' },
     { id: 'trailer', label: 'Trailer', href: '#trailer' },
+    { id: 'analysis', label: 'Análisis', href: '#analysis' },
     { id: 'nominaciones', label: 'Nominaciones', href: '#nominaciones' },
     { id: 'gallery', label: 'Galería', href: '#gallery' },
   ],
@@ -127,4 +127,5 @@ export const navigation = {
 
 export const footer = {
   copyright: `© ${new Date().getFullYear()} Los Olvidos del Paraíso. Todos los derechos reservados.`,
+  instagramUrl: 'https://www.instagram.com/losolvidosdelparaiso/',
 };
