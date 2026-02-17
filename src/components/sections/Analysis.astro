@@ -7,10 +7,10 @@ import Card from '../ui/Card.astro';
 import FadeIn from '../animation/FadeIn.astro';
 ---
 
-<Section id="analysis" padding="xl" bgColor="rojo-oscuro">
+<Section id="analysis" padding="xl" class="bg-background">
   <div class="max-w-6xl mx-auto">
     <FadeIn>
-      <Heading level={2} size="h2" class="text-center mb-16 text-white">
+      <Heading level={2} size="h2" class="text-center mb-16 text-[#efebe4]">
         {analysis.title}
       </Heading>
     </FadeIn>
@@ -21,10 +21,10 @@ import FadeIn from '../animation/FadeIn.astro';
           <Card variant="glass" class="analysis-card p-8 h-full group">
             <!-- Icon/Number -->
             <div class="flex items-center gap-4 mb-6">
-              <div class="w-12 h-12 rounded-full bg-white/40 flex items-center justify-center text-white font-bold text-lg group-hover:bg-white/60 group-hover:text-white transition-colors duration-300 border border-white">
+              <div class="w-12 h-12 rounded-full bg-white/40 flex items-center justify-center text-[#efebe4] font-bold text-lg group-hover:bg-white/60 group-hover:text-[#efebe4] transition-colors duration-300 border border-white">
                 {String(index + 1).padStart(2, '0')}
               </div>
-              <Heading level={3} size="h3" class="group-hover:text-white transition-colors duration-300 text-white">
+              <Heading level={3} size="h3" class="group-hover:text-[#efebe4] transition-colors duration-300 text-[#efebe4]">
                 {item.title}
               </Heading>
             </div>
