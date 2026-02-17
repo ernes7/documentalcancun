@@ -2,27 +2,40 @@
 import Section from '../layout/Section.astro';
 import Heading from '../ui/Heading.astro';
 import FadeIn from '../animation/FadeIn.astro';
-// Coloca el logo en: public/images/nominaciones/BARCIFF-•-Laurels-•-Official-Selection-2026-II.png.webp (o .png)
-const logoSrc = '/images/nominaciones/BARCIFF-•-Laurels-•-Official-Selection-2026-II.png.webp';
+
+const laurels = [
+  {
+    src: '/images/nominaciones/BARCIFF-•-Laurels-•-Official-Selection-2026-II.png.webp',
+    alt: 'Official Selection BARCIFF Barcelona Indie Filmmakers Fest 2026',
+  },
+  {
+    src: '/images/nominaciones/venice-shorts-official-selection-2026.webp',
+    alt: 'Official Selection Venice Shorts 2026',
+  },
+];
 ---
 
 <Section id="nominaciones" padding="xl" bgColor="black">
-  <div class="max-w-2xl mx-auto flex flex-col items-center justify-center text-center">
+  <div class="max-w-4xl mx-auto flex flex-col items-center justify-center text-center">
     <FadeIn>
       <Heading level={2} size="h2" class="text-white mb-12">
         Nominaciones
       </Heading>
     </FadeIn>
-    <FadeIn delay={0.15}>
-      <img
-        src={logoSrc}
-        alt="Official Selection BARCIFF Barcelona Indie Filmmakers Fest 2026"
-        width="600"
-        height="600"
-        class="w-full max-w-md h-auto object-contain"
-        loading="lazy"
-        decoding="async"
-      />
-    </FadeIn>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 w-full">
+      {laurels.map((laurel, i) => (
+        <FadeIn delay={0.15 + i * 0.15}>
+          <img
+            src={laurel.src}
+            alt={laurel.alt}
+            width="600"
+            height="600"
+            class="w-full max-w-xs h-auto object-contain"
+            loading="lazy"
+            decoding="async"
+          />
+        </FadeIn>
+      ))}
+    </div>
   </div>
 </Section>
