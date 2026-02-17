@@ -5,17 +5,17 @@ import Heading from '../ui/Heading.astro';
 import FadeIn from '../animation/FadeIn.astro';
 ---
 
-<Section id="synopsis" variant="default" padding="xl" bgColor="verde-oscuro">
+<Section id="synopsis" variant="default" padding="xl" class="bg-background ">
   <div class="max-w-4xl mx-auto text-center">
     <FadeIn>
-      <Heading level={2} size="h2" class="mb-12 text-white">
+      <Heading level={2} size="h2" class="mb-12 text-[#efebe4]">
         {synopsis.title}
       </Heading>
     </FadeIn>
 
     <FadeIn delay={0.2}>
       <div class="synopsis-text">
-        <p class="text-xl md:text-2xl leading-relaxed font-light text-white">
+        <p class="text-xl md:text-2xl leading-relaxed font-light text-[#efebe4]">
           {synopsis.text}
         </p>
       </div>
