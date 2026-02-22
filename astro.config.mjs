@@ -6,7 +6,11 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://losolvidos.netlify.app', // Update with final domain
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/404') && !page.endsWith('404.html'),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
